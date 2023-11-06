@@ -1,0 +1,21 @@
+//taTable
+        var table = $('#tableID').DataTable();
+
+        // Setup - add a text input to each header cell
+        $('#tableID thead tr').clone(true).appendTo('#tableID thead');
+        $('#tableID thead tr:eq(1) th').each(function (i) {
+            // if conditon for ignoring the first and last action column
+            if ((i != 0) && (i < $('#tableID thead tr:eq(1) th').length - 1)) {
+                var title = $(this).text();
+                $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+
+                $('input', this).on('keyup change', function () {
+                    if (table.column(i).search() !== this.value) {
+                        table.column(i).search(this.value).draw();
+                    }
+                });
+            } else {
+                // remove the action label in clone thead
+                $(this).text('');
+            }
+        });
